@@ -1,0 +1,7 @@
+{
+  "importMap": "deno.importmap",
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --allow-read ./public/main.js",
+    "start": "deno run --import-map deno.importmap --allow-net --allow-env --allow-read ./public/main.js"
+  }
+}

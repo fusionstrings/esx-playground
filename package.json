@@ -1,0 +1,11 @@
+{
+  "name": "esx-playground",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@jspm/generator": "^1.0.0",
+    "@ungap/babel-plugin-transform-esx": "^0.4.3",
+    "mkdirp": "^2.0.0"
+  }
+}

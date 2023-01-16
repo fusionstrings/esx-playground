@@ -1,0 +1,39 @@
+import createRender from "udomsay/ssr";
+import { Signal, signal } from "@webreflection/signal";
+
+const render = createRender({ Signal });
+
+function Counter({ clicks }) {
+  return (
+    <div>
+      <button
+        onclick={() => {
+          clicks.value--;
+        }}
+      >
+        -
+      </button>
+      <span>Clicks- {clicks}</span>
+      <button
+        onclick={() => {
+          clicks.value++;
+        }}
+      >
+        +
+      </button>
+    </div>
+  );
+}
+
+function test(value=0) {
+  console.time("render");
+  render(
+    (
+        <Counter clicks={signal(value)} />
+    ),
+    console.log.bind(console),
+  );
+  console.timeEnd("render");
+}
+
+test(5)

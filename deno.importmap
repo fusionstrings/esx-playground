@@ -1,0 +1,15 @@
+{
+  "imports": {
+    "@ungap/esxtoken": "https://ga.jspm.io/npm:@ungap/esxtoken@0.4.2/esm/index.js",
+    "@webreflection/signal": "https://ga.jspm.io/npm:@webreflection/signal@0.3.0/esm/index.js",
+    "udomsay/ssr": "https://ga.jspm.io/npm:udomsay@0.4.1/esm/ssr.js"
+  },
+  "scopes": {
+    "https://ga.jspm.io/": {
+      "@ungap/esx": "https://ga.jspm.io/npm:@ungap/esx@0.3.0/esm/index.js",
+      "@webreflection/empty/array": "https://ga.jspm.io/npm:@webreflection/empty@0.2.1/esm/array.js",
+      "@webreflection/empty/function": "https://ga.jspm.io/npm:@webreflection/empty@0.2.1/esm/function.js",
+      "domconstants": "https://ga.jspm.io/npm:domconstants@1.0.0/cjs/index.js"
+    }
+  }
+}

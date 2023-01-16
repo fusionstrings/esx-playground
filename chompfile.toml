@@ -1,0 +1,104 @@
+version = 0.1
+
+extensions = ['chomp@0.1:jspm', 'chomp@0.1:babel']
+
+[[task]]
+deps = ['public/main.js']
+target = 'deno.importmap'
+template = 'jspm'
+[task.template-options]
+env = ['deno', 'production']
+
+[[task]]
+dep = 'source/#.esx'
+name = 'esx'
+target = 'public/#.js'
+template = 'babel'
+[task.template-options]
+plugins = ['@ungap/babel-plugin-transform-esx']
+
+[[task]]
+name = 'css'
+dep = 'source/#.css'
+run = 'cp $DEP $TARGET'
+target = 'public/#.css'
+
+[[task]]
+name = 'png'
+dep = 'source/#.png'
+run = 'cp $DEP $TARGET'
+target = 'public/#.png'
+
+[[task]]
+name = 'ico'
+dep = 'source/#.ico'
+run = 'cp $DEP $TARGET'
+target = 'public/#.ico'
+
+[[task]]
+name = 'svg'
+dep = 'source/#.svg'
+run = 'cp $DEP $TARGET'
+target = 'public/#.svg'
+
+[[task]]
+name = 'webmanifest'
+dep = 'source/site.webmanifest'
+run = 'cp $DEP $TARGET'
+target = 'public/site.webmanifest'
+
+[[task]]
+deps = ['css', 'png', 'ico', 'svg', 'webmanifest', 'jsx', 'source/#.html', 'npm:install']
+engine = 'node'
+invalidation = 'always'
+name = 'html'
+run = '''
+    import { Generator } from '@jspm/generator';
+    import { readFile, writeFile } from 'fs/promises';
+    import { pathToFileURL } from 'url';
+    import mkdirp from 'mkdirp';
+    import { dirname } from 'path';
+
+    const generator = new Generator({
+        mapUrl: pathToFileURL(process.env.TARGET),
+        env: ["browser", "production"], 
+        defaultProvider: 'jspm'
+    });
+
+    const htmlSource = await readFile(process.env.DEP, 'utf-8');
+
+    mkdirp.sync(dirname(process.env.TARGET));
+    await writeFile(process.env.TARGET, await generator.htmlInject(htmlSource, {
+      // custom task required to set this up for now!
+      htmlUrl: pathToFileURL('process.env.TARGET'),
+      preload: true,
+      integrity: true, // erring ATM
+      whitespace: true,
+      esModuleShims: true,
+      comment: true,
+      trace: true
+    }));
+'''
+target = 'public/#.html'
+
+[[task]]
+name = 'static'
+deps = ['html', 'npm:install']
+engine = 'node'
+invalidation = 'always'
+run = '''
+   import './generate-static-resources-map.js';
+'''
+target = 'public/static-resources.json'
+
+[[task]]
+dep = 'source/service-worker.jsx'
+target = 'public/service-worker.importmap'
+template = 'jspm'
+[task.template-options]
+env = ['browser', 'production']
+
+[[task]]
+name = 'build'
+serial= true
+deps = ['esx', 'deno.importmap']
